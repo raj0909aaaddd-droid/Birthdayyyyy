@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0f24">
+<title>Happy 24th Birthday, Bhakti ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+<!--
+  HOW TO CUSTOMISE (search the file for these markers)
+  ✍️  words      -> edit the card text, the 24 reasons (CONFIG.reasons) and the letter (inside <dialog id="letter">)
+  🎵  music      -> set CONFIG.music in the <script> at the bottom
+  🎨  colours    -> change the variables in :root
+-->
+<style>
+:root{--navy:#0a0f24;--gold:#e8c987;--rose:#f2b8c6;--cream:#f7efe3;--serif:'Playfair Display',Georgia,serif;--sans:'Plus Jakarta Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:300 1rem/1.7 var(--sans);color:var(--cream);background:radial-gradient(120% 80% at 50% 0,#1b2252,var(--navy) 65%) fixed;overflow-x:hidden}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#bg{z-index:0}#fx{z-index:60}
+
+/* Ambient glow blobs */
+.blob{position:fixed;z-index:0;border-radius:50%;filter:blur(90px);opacity:.3;animation:drift 20s ease-in-out infinite alternate}
+.b1{width:45vmax;height:45vmax;background:var(--gold);top:-15vmax;left:-12vmax}
+.b2{width:40vmax;height:40vmax;background:var(--rose);right:-14vmax;top:35vh;animation-delay:-7s}
+.b3{width:38vmax;height:38vmax;background:#4b4fb8;left:15vw;bottom:-18vmax;animation-delay:-13s}
+@keyframes drift{to{transform:translate(8vmax,-6vmax) scale(1.2)}}
+
+section{position:relative;z-index:2;max-width:1080px;margin:auto;padding:clamp(4.5rem,10vw,8rem) 1.25rem;text-align:center}
+h2{font:600 clamp(1.8rem,5vw,2.8rem)/1.2 var(--serif);margin-bottom:.6rem}
+.lead{max-width:34rem;margin:0 auto 3rem;opacity:.75}
+.glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:26px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.14)}
+.btn{font:600 .95rem var(--sans);color:#2a1d0a;background:linear-gradient(135deg,#f6dfa6,var(--gold) 55%,#d7b06a);border:0;border-radius:99px;padding:.95rem 2rem;cursor:pointer;box-shadow:0 10px 30px rgba(232,201,135,.3);transition:transform .2s}
+.btn:hover{transform:scale(1.05)}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+
+/* Hero */
+#hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.big24{position:absolute;z-index:-1;font:700 clamp(12rem,55vw,32rem)/1 var(--serif);color:transparent;-webkit-text-stroke:1px rgba(232,201,135,.28);animation:drift 12s ease-in-out infinite alternate;user-select:none}
+h1{font:600 clamp(2.2rem,8vw,5.2rem)/1.1 var(--serif)}
+h1 span{display:block;opacity:0;animation:rise 1.2s cubic-bezier(.2,.8,.2,1) forwards}
+h1 .n{animation-delay:.5s}
+h1 em{font-weight:500;background:linear-gradient(100deg,var(--gold),var(--rose) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+#sub{margin-top:1.4rem;min-height:3.4em;font-size:clamp(1rem,2.6vw,1.25rem);transition:opacity .5s;animation:rise 1.2s 1.1s backwards}
+@keyframes rise{from{opacity:0;transform:translateY(40px);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+.cue{margin-top:1.5rem;color:var(--gold);text-decoration:none;font-size:1.8rem;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(8px)}}
+
+/* Chapter cards */
+.grid{display:grid;gap:1.4rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{padding:2.2rem 1.6rem}
+.card i{font-style:normal;font-size:2.2rem;display:block;margin-bottom:.8rem}
+.card h3{font:600 1.35rem var(--serif);color:var(--gold);margin-bottom:.6rem}
+.card p{opacity:.8}
+
+/* 24 reasons */
+.gems{display:grid;grid-template-columns:repeat(8,1fr);gap:.7rem;max-width:620px;margin:0 auto 1.8rem}
+.gem{aspect-ratio:1;border-radius:50%;cursor:pointer;color:var(--gold);font:600 1.05rem var(--serif);background:rgba(255,255,255,.06);border:1px solid rgba(232,201,135,.4);transition:transform .2s,background .3s}
+.gem:hover{transform:scale(1.12)}
+.gem.found{background:linear-gradient(135deg,#f6dfa6,var(--gold));color:#2a1d0a;box-shadow:0 0 18px rgba(232,201,135,.45)}
+.gem.now{box-shadow:0 0 0 3px var(--rose),0 0 18px rgba(232,201,135,.45)}
+.reveal{max-width:34rem;margin:0 auto;padding:1.8rem 1.6rem;min-height:9rem;display:grid;place-content:center;gap:.6rem}
+.reveal p{font:italic 500 1.35rem/1.5 var(--serif);animation:pop .5s}
+.reveal small{opacity:.6}
+@media (max-width:560px){.gems{grid-template-columns:repeat(6,1fr);gap:.5rem}}
+
+/* Wish capsule + letter */
+.capsule{display:inline-grid;gap:1.2rem;justify-items:center;padding:2.4rem 2.2rem;max-width:26rem}
+.seal{font-size:3.4rem;filter:drop-shadow(0 0 18px rgba(242,184,198,.6));animation:bob 3s ease-in-out infinite}
+dialog{margin:auto;width:min(92vw,560px);max-height:88vh;overflow:auto;padding:2.2rem 1.8rem;color:var(--cream);text-align:left;border:1px solid rgba(232,201,135,.35);border-radius:26px;background:linear-gradient(160deg,rgba(32,38,82,.97),rgba(14,18,44,.98))}
+dialog[open]{animation:pop .5s cubic-bezier(.2,.9,.3,1.2)}
+dialog::backdrop{background:rgba(5,8,22,.7);backdrop-filter:blur(6px)}
+@keyframes pop{from{opacity:0;transform:translateY(30px) scale(.92)}}
+dialog h3{font:600 1.8rem var(--serif);color:var(--gold);margin-bottom:1rem}
+dialog p{margin-bottom:1rem;font:1.08rem/1.8 var(--serif)}
+dialog form{text-align:center;margin-top:1.4rem}
+
+/* Cake */
+.cake{position:relative;width:230px;height:230px;margin:60px auto 2rem;cursor:pointer}
+.plate{position:absolute;bottom:0;left:-14px;right:-14px;height:16px;border-radius:50%;background:linear-gradient(#f0d493,#a8843f)}
+.tier{position:absolute;left:50%;border-radius:14px 14px 6px 6px;box-shadow:inset 0 -10px 18px rgba(0,0,0,.12)}
+.tier::before{content:'';position:absolute;top:-1px;left:0;right:0;height:22px;border-radius:inherit;background:radial-gradient(circle at 12px 0,#fff7ea 11px,transparent 12px) 0 0/24px 22px repeat-x}
+.t1{bottom:10px;width:230px;height:80px;margin-left:-115px;background:linear-gradient(#f9d4de,var(--rose))}
+.t2{bottom:90px;width:160px;height:64px;margin-left:-80px;background:linear-gradient(#fff1cf,var(--gold))}
+.tier b{position:absolute;inset:0;display:grid;place-items:center;padding-top:16px;font:700 1.8rem var(--serif);color:rgba(120,50,70,.7)}
+.candle{position:absolute;left:50%;bottom:154px;width:12px;height:54px;margin-left:-6px;border-radius:3px;background:repeating-linear-gradient(135deg,#fff 0 8px,var(--rose) 8px 16px)}
+.candle::before{content:'';position:absolute;left:50%;top:-6px;width:2px;height:7px;margin-left:-1px;background:#3a2f2a}
+.flame{position:absolute;left:50%;top:-32px;width:14px;height:26px;margin-left:-7px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(#fff 15%,#ffd36b 50%,#ff8a3d);box-shadow:0 0 26px 10px rgba(255,190,90,.55);transform-origin:50% 100%;animation:flick .15s infinite alternate;transition:opacity .4s,scale .4s}
+@keyframes flick{to{transform:scale(.92,1.1) rotate(2deg)}}
+.out .flame{opacity:0;scale:0}
+.out .candle::after{content:'';position:absolute;left:50%;top:-10px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(3px);animation:smoke 2.2s forwards}
+@keyframes smoke{to{transform:translateY(-70px) scale(5);opacity:0}}
+#wishMsg{min-height:3.2rem;margin-top:1.2rem;font:italic 500 1.2rem/1.5 var(--serif);color:var(--rose)}
+
+/* Music toggle */
+#music{position:fixed;top:14px;right:14px;z-index:70;width:48px;height:48px;padding:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--gold)}
+.eq{display:flex;gap:3px;align-items:flex-end;height:18px}
+.eq i{width:3px;height:5px;background:currentColor;border-radius:2px}
+.on .eq i{animation:eq .9s ease-in-out infinite alternate}
+.eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}.eq i:nth-child(4){animation-delay:-.15s}
+@keyframes eq{from{height:4px}to{height:18px}}
+
+footer{position:relative;z-index:2;text-align:center;padding:3rem 1rem 4rem;opacity:.6;font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<canvas id="bg"></canvas><canvas id="fx"></canvas>
+
+<!-- 🎵 Music button (set CONFIG.music in the script to enable real audio) -->
+<button id="music" class="glass" aria-label="Play music" aria-pressed="false"><span class="eq"><i></i><i></i><i></i><i></i></span></button>
+<audio id="bgm" loop preload="none"></audio>
+
+<section id="hero">
+  <div class="big24" aria-hidden="true">24</div>
+  <h1><span>Happy 24th Birthday,</span><span class="n"><em>Bhakti</em> ✨</span></h1>
+  <p id="sub"></p>
+  <a class="cue" href="#chapter" aria-label="Scroll down">⌄</a>
+</section>
+
+<section id="chapter">
+  <h2>Chapter 24</h2>
+  <p class="lead">A brand-new chapter, written in gold. Here is what this one is made of.</p>
+  <!-- ✍️ Edit the three cards below -->
+  <div class="grid">
+    <article class="card glass"><i>🌹</i><h3>Grace &amp; Ambition</h3><p>Growing wiser, shining brighter. You carry yourself with a quiet strength that makes everyone around you aim higher.</p></article>
+    <article class="card glass"><i>🥂</i><h3>The Energy &amp; Laughter</h3><p>You turn ordinary moments into the ones we replay for years. Nobody makes a room feel as alive as you do.</p></article>
+    <article class="card glass"><i>🌠</i><h3>Limitless Potential</h3><p>Year 24 is yours to conquer, with style. Whatever you reach for next, you've already got what it takes.</p></article>
+  </div>
+</section>
+
+<section id="reasons">
+  <h2>24 Reasons to Celebrate You</h2>
+  <p class="lead">One for every year. Tap a star to find out why you're so loved.</p>
+  <!-- ✍️ The 24 reasons live in CONFIG.reasons in the script at the bottom -->
+  <div class="gems" id="gems"></div>
+  <div class="reveal glass" id="reveal" aria-live="polite"><p>Pick a star to open your first reason ✨</p><small>0 of 24 found</small></div>
+</section>
+
+<section id="wish">
+  <h2>Your Wish Capsule</h2>
+  <p class="lead">Sealed with love, just for you. Open it when you're ready.</p>
+  <div class="capsule glass"><div class="seal">💌</div><button class="btn" id="openLetter">Open your letter</button></div>
+
+  <dialog id="letter" aria-labelledby="lt">
+    <h3 id="lt">Dear Bhakti,</h3>
+    <!-- ✍️ Replace this with your own message and inside jokes -->
+    <p>Happy 24th birthday! Some people walk into your life and quietly make everything brighter. You did that for me, and I'm so grateful you're my friend.</p>
+    <p>You've grown into someone so graceful, driven and endlessly fun, and I love watching you chase what you want without losing your sparkle. Thank you for the laughs, the honest talks, and for always showing up.</p>
+    <p>Here's to year 24: more adventures, bigger dreams, and every good thing finding its way to you. (Add your favourite inside joke here 😉)</p>
+    <p>With all my love,<br>Your friend 💛</p>
+    <form method="dialog"><button class="btn">Close</button></form>
+  </dialog>
+</section>
+
+<section id="cake-sec">
+  <h2>Make a Wish</h2>
+  <p class="lead">Tap the cake or the button, close your eyes, and blow.</p>
+  <div class="cake" id="cake" role="button" tabindex="0" aria-label="Make a wish and blow out the candle">
+    <div class="candle"><i class="flame"></i></div>
+    <div class="tier t2"></div>
+    <div class="tier t1"><b>24</b></div>
+    <div class="plate"></div>
+  </div>
+  <button class="btn" id="wishBtn">Make a wish 🕯️</button>
+  <p id="wishMsg" aria-live="polite"></p>
+</section>
+
+<footer>Made with love, for Bhakti. Chapter 24 ✨</footer>
+
+<script>
+/* ===== CONFIG: easy things to change ===== */
+const CONFIG={
+  music:'',  // 🎵 e.g. 'happy-birthday.mp3' or a direct audio URL. Empty = button animates only.
+  phrases:[  // ✍️ rotating subtitles under the title
+    'Another year of you lighting up every room.',
+    'Welcome to chapter twenty-four, your best one yet.',
+    'Grace, grit and a whole lot of glitter.',
+    'You deserve every good thing coming your way.'
+  ],
+  reasons:[ // ✍️ shown when she taps a star (keep exactly 24)
+    "Your laugh is the best sound in any room.",
+    "You show up, every single time.",
+    "You make ordinary days feel like occasions.",
+    "Your kindness is never for show.",
+    "You give honest advice with a soft heart.",
+    "You make everyone feel like they belong.",
+    "Your ambition is contagious.",
+    "You can turn any bad day around.",
+    "You're brave enough to be exactly yourself.",
+    "Your style is effortless.",
+    "You remember the little things that matter.",
+    "You celebrate other people's wins like they're your own.",
+    "You're the person everyone wants on their team.",
+    "Your energy lights up the whole room.",
+    "You have a heart of gold and a spine of steel.",
+    "You're always up for an adventure.",
+    "You make hard things look graceful.",
+    "You listen, and you really hear.",
+    "Your sense of humour is unmatched.",
+    "You believe in people before they believe in themselves.",
+    "You keep growing wiser without losing your sparkle.",
+    "You make great memories out of nothing at all.",
+    "The world is better with you in it.",
+    "Because you're Bhakti, and that's reason enough."
+  ]
+};
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const bg=$('#bg'),fx=$('#fx'),bc=bg.getContext('2d'),fc=fx.getContext('2d');
+const sub=$('#sub'),cake=$('#cake'),wishBtn=$('#wishBtn'),msg=$('#wishMsg'),mus=$('#music'),bgm=$('#bgm'),letter=$('#letter');
+let W,H,stars=[],conf=[],mx=0,my=0;
+
+/* ===== Canvas: twinkling stars (background) + confetti (foreground) ===== */
+function size(){
+  const D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+  [bg,fx].forEach((c,i)=>{c.width=W*D;c.height=H*D;[bc,fc][i].setTransform(D,0,0,D,0,0)});
+  stars=Array.from({length:Math.min(130,W/8|0)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,s:Math.random()*.25+.05,p:Math.random()*6}));
+}
+addEventListener('resize',size);size();
+addEventListener('pointermove',e=>{mx=e.clientX/W-.5;my=e.clientY/H-.5});
+
+const COLORS=['#e8c987','#f2b8c6','#fff4d6','#c9a0dc','#9ec5ff'];
+function burst(x,y,n=140,pw=1){
+  for(let i=0;i<n;i++){const a=Math.random()*6.28,v=(Math.random()*9+3)*pw;
+    conf.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-6*pw,w:Math.random()*8+4,h:Math.random()*5+3,c:COLORS[i%5],r:Math.random()*6,vr:Math.random()*.3-.15,life:1})}
+}
+function loop(t){
+  bc.clearRect(0,0,W,H);bc.fillStyle='#fff4d6';
+  for(const s of stars){
+    s.y-=s.s;if(s.y<0)s.y=H;
+    bc.globalAlpha=.4+.4*Math.sin(t/800+s.p);
+    bc.beginPath();bc.arc(s.x+mx*s.r*30,s.y+my*s.r*30,s.r,0,7);bc.fill();
+  }
+  fc.clearRect(0,0,W,H);
+  conf=conf.filter(p=>p.life>0&&p.y<H+20);
+  for(const p of conf){
+    p.vy+=.25;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life-=.004;
+    fc.save();fc.globalAlpha=Math.min(1,p.life*2);fc.translate(p.x,p.y);fc.rotate(p.r);
+    fc.fillStyle=p.c;fc.fillRect(-p.w/2,-p.h/2,p.w,p.h);fc.restore();
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+addEventListener('pointerdown',e=>burst(e.clientX,e.clientY,10,.4));   // tiny sparkle on every tap
+setTimeout(()=>burst(innerWidth/2,innerHeight*.35,130),1400);          // welcome burst
+
+/* ===== Hero: rotating subtitle ===== */
+let pi=0;sub.textContent=CONFIG.phrases[0];
+setInterval(()=>{sub.style.opacity=0;setTimeout(()=>{sub.textContent=CONFIG.phrases[pi=++pi%CONFIG.phrases.length];sub.style.opacity=1},500)},4200);
+
+/* ===== 24 reasons ===== */
+const gems=$('#gems'),rev=$('#reveal');let found=new Set(),cur=null;
+CONFIG.reasons.forEach((t,i)=>{
+  const b=document.createElement('button');b.className='gem';b.textContent=i+1;b.setAttribute('aria-label','Reason '+(i+1));
+  b.onclick=()=>{
+    cur&&cur.classList.remove('now');(cur=b).classList.add('found','now');found.add(i);
+    rev.innerHTML=`<p>${t}</p><small>${found.size} of 24 found</small>`;
+    const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,26,.5);
+    if(found.size===24)setTimeout(()=>{rev.innerHTML='<p>You found all 24. There are a hundred more.</p><small>Happy birthday, Bhakti ✨</small>';burst(innerWidth/2,innerHeight*.5,220)},1800);
+  };
+  gems.append(b);
+});
+
+/* ===== Wish capsule (letter modal) ===== */
+$('#openLetter').onclick=()=>letter.showModal();
+letter.addEventListener('close',()=>burst(innerWidth/2,innerHeight*.45,150));   // celebrate after reading
+letter.onclick=e=>{if(e.target===letter)letter.close()};                        // click outside to close
+
+/* ===== Birthday cake: make a wish, blow out the candle ===== */
+let busy=false;
+function wish(){
+  if(busy)return;busy=true;
+  if(cake.classList.contains('out')){        // relight
+    cake.classList.remove('out');wishBtn.textContent='Make a wish 🕯️';msg.textContent='';busy=false;return;
+  }
+  msg.textContent='Close your eyes… make a wish…';
+  setTimeout(()=>{
+    cake.classList.add('out');wishBtn.textContent='Relight the candle 🔥';
+    msg.textContent='Wish made. 24 is going to be yours, Bhakti ✨';   // ✍️ edit me
+    const r=cake.getBoundingClientRect();burst(r.left+r.width/2,r.top,200);
+    setTimeout(()=>burst(innerWidth*.2,innerHeight*.9,90),300);
+    setTimeout(()=>burst(innerWidth*.8,innerHeight*.9,90),500);
+    busy=false;
+  },2200);
+}
+cake.onclick=wishBtn.onclick=wish;
+cake.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();wish()}};
+
+/* ===== Music toggle ===== */
+if(CONFIG.music)bgm.src=CONFIG.music;
+mus.onclick=()=>{
+  const on=!mus.classList.contains('on');
+  mus.classList.toggle('on',on);mus.setAttribute('aria-pressed',on);mus.setAttribute('aria-label',on?'Pause music':'Play music');
+  if(CONFIG.music){on?bgm.play().catch(()=>mus.classList.remove('on')):bgm.pause()}
+};
+</script>
+</body>
+</html>
